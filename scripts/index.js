@@ -3,11 +3,11 @@ function createCard(cardParams) {
         .content
         .querySelector('.card')
         .cloneNode(true);
-    card.querySelector('.card__delete-button')
-        .addEventListener('click', () => {
-            card.remove()
-        })
-        .targetElement = card
+    let cardDeleteButton = card.querySelector('.card__delete-button');
+    cardDeleteButton.addEventListener('click', (event) => {
+        event.currentTarget.targetElement.remove()
+    });
+    cardDeleteButton.targetElement = card;
     card.querySelector('.card__title').textContent = cardParams.name;
     card.querySelector('.card__image').setAttribute('src', cardParams.link);
     return card;
