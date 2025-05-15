@@ -3,10 +3,7 @@ import avatar from '../images/avatar.jpg';
 
 import { openModal, closeModal } from './components/modal.js';
 import { createCard, deleteCard } from './components/card.js';
-import {
-  enableValidation,
-  clearValidation
-} from './components/validation.js';
+import { enableValidation, clearValidation } from './components/validation.js';
 import {
   getUserInfo,
   getInitialCards,
@@ -15,7 +12,8 @@ import {
   addNewCard
 } from './components/api.js';
 
-document.querySelector('.profile__image').style.backgroundImage = `url(${avatar})`;
+const profileImage = document.querySelector('.profile__image');
+profileImage.style.backgroundImage = `url(${avatar})`;
 
 const cardContainer = document.querySelector('.places__list');
 const popupEdit = document.querySelector('.popup_type_edit');
@@ -25,7 +23,7 @@ const popupAvatar = document.querySelector('.popup_type_avatar');
 
 const profileEditBtn = document.querySelector('.profile__edit-button');
 const profileAddBtn = document.querySelector('.profile__add-button');
-const avatarEditBtn = document.querySelector('.profile__image');
+const avatarEditBtn = profileImage;
 
 const closeButtons = document.querySelectorAll('.popup__close');
 
@@ -90,8 +88,8 @@ avatarEditBtn.addEventListener('click', () => {
 
 closeButtons.forEach(btn =>
   btn.addEventListener('click', () => {
-    const openedPopup = document.querySelector('.popup_is-opened');
-    if (openedPopup) closeModal(openedPopup);
+    const popup = btn.closest('.popup');
+    if (popup) closeModal(popup);
   })
 );
 
@@ -133,7 +131,7 @@ avatarFormElement.addEventListener('submit', (evt) => {
 
   updateUserAvatar(newAvatarUrl)
     .then((userData) => {
-      document.querySelector('.profile__image').style.backgroundImage = `url(${userData.avatar})`;
+      profileImage.style.backgroundImage = `url(${userData.avatar})`;
       closeModal(popupAvatar);
     })
     .catch((err) => {
@@ -152,7 +150,7 @@ Promise.all([getUserInfo(), getInitialCards()])
   .then(([userData, cards]) => {
     profileTitle.textContent = userData.name;
     profileDesc.textContent = userData.about;
-    document.querySelector('.profile__image').style.backgroundImage = `url(${userData.avatar})`;
+    profileImage.style.backgroundImage = `url(${userData.avatar})`;
     currentUserId = userData._id;
 
     cards.forEach(cardData => {
