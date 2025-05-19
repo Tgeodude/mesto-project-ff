@@ -95,10 +95,11 @@ closeButtons.forEach(btn =>
 
 profileFormElement.addEventListener('submit', (evt) => {
   evt.preventDefault();
-  const name = nameInput.value;
-  const about = descInput.value;
+  const saveButton = evt.submitter;
+  const originalText = saveButton.textContent;
+  saveButton.textContent = 'Сохранение...';
 
-  updateUserInfo(name, about)
+  updateUserInfo(nameInput.value, descInput.value)
     .then((userData) => {
       profileTitle.textContent = userData.name;
       profileDesc.textContent = userData.about;
@@ -106,15 +107,19 @@ profileFormElement.addEventListener('submit', (evt) => {
     })
     .catch((err) => {
       console.error(err);
+    })
+    .finally(() => {
+      saveButton.textContent = originalText;
     });
 });
 
 cardFormElement.addEventListener('submit', (evt) => {
   evt.preventDefault();
-  const name = cardNameInput.value;
-  const link = cardLinkInput.value;
+  const saveButton = evt.submitter;
+  const originalText = saveButton.textContent;
+  saveButton.textContent = 'Создание...';
 
-  addNewCard(name, link)
+  addNewCard(cardNameInput.value, cardLinkInput.value)
     .then((cardData) => {
       cardContainer.prepend(createCard(cardData, handleImageClick, deleteCard, currentUserId));
       cardFormElement.reset();
@@ -122,20 +127,28 @@ cardFormElement.addEventListener('submit', (evt) => {
     })
     .catch((err) => {
       console.error(err);
+    })
+    .finally(() => {
+      saveButton.textContent = originalText;
     });
 });
 
 avatarFormElement.addEventListener('submit', (evt) => {
   evt.preventDefault();
-  const newAvatarUrl = avatarInput.value;
+  const saveButton = evt.submitter;
+  const originalText = saveButton.textContent;
+  saveButton.textContent = 'Сохранение...';
 
-  updateUserAvatar(newAvatarUrl)
+  updateUserAvatar(avatarInput.value)
     .then((userData) => {
       profileImage.style.backgroundImage = `url(${userData.avatar})`;
       closeModal(popupAvatar);
     })
     .catch((err) => {
       console.error(err);
+    })
+    .finally(() => {
+      saveButton.textContent = originalText;
     });
 });
 
